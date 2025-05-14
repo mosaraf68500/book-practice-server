@@ -56,6 +56,24 @@ async function run() {
     })
 
 
+
+    app.put("/update/:id",async(req,res)=>{
+        const id=req.params.id;
+        const filter={_id:new ObjectId(id)};
+        const book=req.body;
+        const updateDoc={
+            $set:{
+                title:book.title,
+                author:book.author,
+                page:book.page
+            }
+        }
+        const option={upsert:true};
+        const result=await collectionBooks.updateOne(filter,updateDoc,option);
+        res.send(result);
+    })
+
+
     app.delete("/books/:id",async(req,res)=>{
         const id=req.params.id;
         const query={_id:new ObjectId(id)};
